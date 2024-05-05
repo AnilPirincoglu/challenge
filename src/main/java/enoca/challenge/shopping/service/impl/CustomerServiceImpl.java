@@ -2,7 +2,7 @@ package enoca.challenge.shopping.service.impl;
 
 import enoca.challenge.shopping.dto.CustomerResponse;
 import enoca.challenge.shopping.entity.Customer;
-import enoca.challenge.shopping.exceptions.GlobalException;
+import enoca.challenge.shopping.exception.GlobalException;
 import enoca.challenge.shopping.repository.CustomerRepository;
 import enoca.challenge.shopping.service.CustomerService;
 import enoca.challenge.shopping.util.CustomerConverter;
@@ -35,7 +35,7 @@ public class CustomerServiceImpl implements CustomerService {
                                 HttpStatus.NOT_FOUND));
     }
 
-    private void isEmailUsed(Customer customer) {//TODO 2.1
+    private void isEmailUsed(Customer customer) {
         if (customerRepository.findByEmail(customer.getEmail()).isPresent())
             throw new GlobalException("This email is already used : " + customer.getEmail()
                     , HttpStatus.BAD_REQUEST);

@@ -56,7 +56,7 @@ public class ProductServiceImpl implements ProductService {
                                 HttpStatus.NOT_FOUND));
     }
 
-    private void haveIProduct(Product product) {//TODO 2.0 yaklaşım doğru mu?
+    private void haveIProduct(Product product) {
         if (productRepository.findByName(product.getName()).isPresent())
             throw new GlobalException("This product already created : " + product.getName(),
                     HttpStatus.BAD_REQUEST);
