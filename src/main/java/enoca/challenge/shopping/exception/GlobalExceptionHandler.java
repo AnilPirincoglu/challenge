@@ -1,4 +1,4 @@
-package enoca.challenge.shopping.exceptions;
+package enoca.challenge.shopping.exception;
 
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
