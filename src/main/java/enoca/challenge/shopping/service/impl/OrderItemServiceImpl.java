@@ -1,7 +1,8 @@
 package enoca.challenge.shopping.service.impl;
 
+import enoca.challenge.shopping.dto.ProductResponse;
+import enoca.challenge.shopping.entity.Order;
 import enoca.challenge.shopping.entity.OrderItem;
-import enoca.challenge.shopping.entity.Product;
 import enoca.challenge.shopping.repository.OrderItemRepository;
 import enoca.challenge.shopping.service.OrderItemService;
 import enoca.challenge.shopping.service.OrderService;
@@ -20,10 +21,7 @@ public class OrderItemServiceImpl implements OrderItemService {
 
 
     @Override
-    public OrderItem createOrderItem(Product product) {
-        OrderItem orderItem = new OrderItem();
-        orderItem.setName(product.getName());
-        orderItem.setPrice(product.getPrice());
-        return orderItemRepository.save(orderItem);
+    public OrderItem createOrderItem(ProductResponse product, Order order) {
+        return orderItemRepository.save(new OrderItem(product.name(),product.price(),order));
     }
 }
