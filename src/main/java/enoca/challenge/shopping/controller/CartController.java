@@ -22,9 +22,9 @@ public class CartController {
         return cartService.getCart(id);
     }
 
-    @PostMapping("/")
-    public CartResponse updateCart(@RequestBody Cart cart) {
-        return cartService.updateCart(cart);
+    @PostMapping("/update/{id}")
+    public CartResponse updateCart(@PathVariable Long id) {
+        return cartService.updateCart(id);
     }
 
     @PostMapping("empty/{id}")

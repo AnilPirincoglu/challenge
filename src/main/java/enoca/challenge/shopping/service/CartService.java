@@ -6,7 +6,7 @@ import enoca.challenge.shopping.entity.Cart;
 public interface CartService {
     CartResponse getCart(Long id);
 
-    CartResponse updateCart(Cart cart);
+    CartResponse updateCart(Long id);
 
     CartResponse emptyCart(Long id);
 
