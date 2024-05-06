@@ -2,6 +2,7 @@ package enoca.challenge.shopping.service.impl;
 
 import enoca.challenge.shopping.dto.CartResponse;
 import enoca.challenge.shopping.entity.Cart;
+import enoca.challenge.shopping.entity.Customer;
 import enoca.challenge.shopping.entity.Product;
 import enoca.challenge.shopping.exception.GlobalException;
 import enoca.challenge.shopping.repository.CartRepository;
@@ -13,7 +14,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 @Service
 public class CartServiceImpl implements CartService {
@@ -73,7 +73,7 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public Cart createCart() {
-        return cartRepository.save(new Cart());
+        return cartRepository.save(new Cart(0d,new Customer(),new ArrayList<>()));
     }
 
     private void hasItId(Cart cart) {
