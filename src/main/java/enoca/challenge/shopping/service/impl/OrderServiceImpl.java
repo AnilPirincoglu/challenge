@@ -73,7 +73,7 @@ public class OrderServiceImpl implements OrderService {
                 new ArrayList<>()));
     }
 
-    private CartResponse stockControl(Long cart_id) {//TODO Mantık Hatası Var
+    private CartResponse stockControl(Long cart_id) {
         Cart cart = cartService.findCart(cart_id);
         for (Product product : cart.getProducts()) {
             if (product.getStockQuantity() <= 0)
