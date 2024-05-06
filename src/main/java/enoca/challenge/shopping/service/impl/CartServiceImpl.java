@@ -34,8 +34,8 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public CartResponse updateCart(Cart cart) {
-        hasItId(cart);
+    public CartResponse updateCart(Long id) {
+        Cart cart = findCart(id);
         cart.setTotalPrice(calculateTotalPrice(cart));
         return CartConverter
                 .cartToResponse(cartRepository.save(cart));
@@ -76,10 +76,10 @@ public class CartServiceImpl implements CartService {
         return cartRepository.save(new Cart(0d,new Customer(),new ArrayList<>()));
     }
 
-    private void hasItId(Cart cart) {
-        if (cart.getId() == null)
-            throw new GlobalException("Id field must not be null!", HttpStatus.BAD_REQUEST);
-    }
+//    private void hasItId(Cart cart) {
+//        if (cart.getId() == null)
+//            throw new GlobalException("Id field must not be null!", HttpStatus.BAD_REQUEST);
+//    }
 
     public Cart findCart(Long id) {
         return cartRepository.findById(id)

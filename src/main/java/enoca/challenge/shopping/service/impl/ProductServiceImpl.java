@@ -28,7 +28,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ProductResponse createProduct(Product product) {
-        haveIProduct(product);
+        findProduct(product.getId());
         return ProductConverter
                 .productToResponse(
                         productRepository.save(product));
@@ -36,7 +36,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ProductResponse updateProduct(Product product) {
-        hasItId(product);
+        findProduct(product.getId());
         return ProductConverter
                 .productToResponse(
                         productRepository.save(product));
@@ -54,16 +54,5 @@ public class ProductServiceImpl implements ProductService {
                 .orElseThrow(() ->
                         new GlobalException("Product with given id is not exist: " + id,
                                 HttpStatus.NOT_FOUND));
-    }
-
-    private void haveIProduct(Product product) {
-        if (productRepository.findByName(product.getName()).isPresent())
-            throw new GlobalException("This product already created : " + product.getName(),
-                    HttpStatus.BAD_REQUEST);
-    }
-
-    private void hasItId(Product product) {
-        if (product.getId() == null)
-            throw new GlobalException("Id field must not be null!", HttpStatus.BAD_REQUEST);
     }
 }
