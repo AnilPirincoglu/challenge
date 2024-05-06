@@ -9,8 +9,7 @@ import java.util.List;
 public class OrderConverter {
     public static OrderResponse orderToResponse(Order order) {
         return new OrderResponse(order.getCustomer().getEmail(),
-                ProductConverter
-                        .productsToResponseList(order.getProducts()),
+                OrderItemConverter.orderItemToResponseList(order.getOrderItems()),
                 order.getTotalPrice());
     }
 

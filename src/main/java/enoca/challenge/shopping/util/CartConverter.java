@@ -14,10 +14,4 @@ public class CartConverter {
                 cart.getTotalPrice());
     }
 
-    public static Order cartToOrder(Cart cart) {
-        return new Order(cart.getTotalPrice(),
-                cart.getCustomer(),
-                new ArrayList<>(cart.getProducts())
-        );
-    }
 }
