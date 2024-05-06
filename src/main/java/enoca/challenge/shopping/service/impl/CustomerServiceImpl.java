@@ -38,6 +38,13 @@ public class CustomerServiceImpl implements CustomerService {
                                 HttpStatus.NOT_FOUND));
     }
 
+    @Override
+    public Customer findByEmail(String email) {
+        return customerRepository.findByEmail(email).orElseThrow(()->
+                new GlobalException("This email is already used : " + email
+                        , HttpStatus.BAD_REQUEST));
+    }
+
     private void isEmailUsed(Customer customer) {
         if (customerRepository.findByEmail(customer.getEmail()).isPresent())
             throw new GlobalException("This email is already used : " + customer.getEmail()
