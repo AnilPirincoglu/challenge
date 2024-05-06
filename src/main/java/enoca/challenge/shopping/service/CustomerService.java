@@ -6,4 +6,6 @@ import enoca.challenge.shopping.entity.Customer;
 public interface CustomerService {
     CustomerResponse addCustomer(Customer customer);
     Customer findCustomer(Long id);
+
+    Customer findByEmail(String email);
 }
