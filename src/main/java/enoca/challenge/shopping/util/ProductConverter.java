@@ -18,11 +18,5 @@ public class ProductConverter {
         return products.stream().map(ProductConverter::productToResponse).toList();
     }
 
-    public static OrderItem productToOrderItem(Product product, Order order) {
-        return new OrderItem(product.getName(), product.getPrice(), order);
-    }
 
-    public static List<OrderItem> productToOrderItemList(List<Product> products, Order order) {
-        return new ArrayList<>(products.stream().map(product -> productToOrderItem(product, order)).toList());
-    }
 }
