@@ -38,22 +38,10 @@ public class Product extends BaseEntity {
             inverseJoinColumns = @JoinColumn(name = "cart_id"))
     private List<Cart> carts;
 
-//    @ManyToMany
-//    @JoinTable(name = "order_product",
-//            schema = "enoca_challenge",
-//            joinColumns = @JoinColumn(name = "product_id"),
-//            inverseJoinColumns = @JoinColumn(name = "order_id"))
-//    private List<Order> orders;
-
     public void addCart(Cart cart) {
         if (carts == null)
             carts = new ArrayList<>();
         carts.add(cart);
     }
 
-//    public void addOrder(Order order) {
-//        if (orders == null)
-//            orders = new ArrayList<>();
-//        orders.add(order);
-//    }
 }
