@@ -5,7 +5,6 @@ import enoca.challenge.shopping.entity.Order;
 import enoca.challenge.shopping.entity.OrderItem;
 import enoca.challenge.shopping.repository.OrderItemRepository;
 import enoca.challenge.shopping.service.OrderItemService;
-import enoca.challenge.shopping.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,7 +12,6 @@ import org.springframework.stereotype.Service;
 public class OrderItemServiceImpl implements OrderItemService {
 
     private OrderItemRepository orderItemRepository;
-    private OrderService orderService;
     @Autowired
     public OrderItemServiceImpl(OrderItemRepository orderItemRepository) {
         this.orderItemRepository = orderItemRepository;

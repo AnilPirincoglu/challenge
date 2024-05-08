@@ -37,25 +37,22 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public OrderResponse placeOrder(Long cart_id) {
-        CartResponse cart = cartService.getCart(cart_id);
-        Order order = createOrder(cart);
-        order.getOrderItems().addAll(stockControl(cart_id)
-                .products()
-                .stream()
-                .map(productResponse ->
+    public OrderResponse placeOrder(Long cartId) {
+        Order order = createOrder(cartId);
+        stockControl(cartId).products().forEach(productResponse ->
+                order.addOrderItem(
                         orderItemService.createOrderItem(productResponse,order))
-                .toList());
+        );
         OrderResponse orderResponse = OrderConverter
                 .orderToResponse(orderRepository.save(order));
-        cartService.emptyCart(cart_id);
+        cartService.emptyCart(cartId);
         return orderResponse;
     }
 
     @Override
-    public List<OrderResponse> getAllOrdersForCustomer(Long customer_id) {
+    public List<OrderResponse> getAllOrdersForCustomer(Long customerId) {
         return OrderConverter.orderToResponseList(
-                customerService.findCustomer(customer_id)
+                customerService.findCustomer(customerId)
                         .getOrders());
     }
 
@@ -67,14 +64,15 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Order createOrder(CartResponse cartResponse) {
+    public Order createOrder(Long cartId) {
+        CartResponse cartResponse = cartService.getCart(cartId);
         return orderRepository.save(new Order(cartResponse.totalPrice(),
                 customerService.findByEmail(cartResponse.customerEmail()),
                 new ArrayList<>()));
     }
 
-    private CartResponse stockControl(Long cart_id) {
-        Cart cart = cartService.findCart(cart_id);
+    private CartResponse stockControl(Long cartId) {
+        Cart cart = cartService.findCart(cartId);
         for (Product product : cart.getProducts()) {
             if (product.getStockQuantity() <= 0)
                 throw new GlobalException(product.getName() + " is out of stock!", HttpStatus.BAD_REQUEST);
