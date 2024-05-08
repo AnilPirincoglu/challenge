@@ -24,7 +24,7 @@ public class CustomerServiceImpl implements CustomerService {
     }
     @Override
     public CustomerResponse addCustomer(Customer customer) {
-        isEmailUsed(customer);
+        checkEmail(customer);
         cartService.createCart().setCustomer(customer);
         return CustomerConverter
                 .customerToResponse(customerRepository.save(customer));
@@ -40,13 +40,15 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public Customer findByEmail(String email) {
-        return customerRepository.findByEmail(email).orElseThrow(()->
-                new GlobalException("This email is already used : " + email
-                        , HttpStatus.BAD_REQUEST));
+        return customerRepository.findByEmail(email)
+                .orElseThrow(()->
+                new GlobalException("Customer with given email is not exist : " + email
+                        , HttpStatus.NOT_FOUND));
     }
 
-    private void isEmailUsed(Customer customer) {
-        if (customerRepository.findByEmail(customer.getEmail()).isPresent())
+    private void checkEmail(Customer customer) {
+        if (customerRepository.findByEmail(customer.getEmail())
+                .isPresent())
             throw new GlobalException("This email is already used : " + customer.getEmail()
                     , HttpStatus.BAD_REQUEST);
     }
