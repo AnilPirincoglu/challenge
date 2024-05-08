@@ -73,13 +73,8 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public Cart createCart() {
-        return cartRepository.save(new Cart(0d,new Customer(),new ArrayList<>()));
+        return cartRepository.save(new Cart(0d,null,new ArrayList<>()));
     }
-
-//    private void hasItId(Cart cart) {
-//        if (cart.getId() == null)
-//            throw new GlobalException("Id field must not be null!", HttpStatus.BAD_REQUEST);
-//    }
 
     public Cart findCart(Long id) {
         return cartRepository.findById(id)
