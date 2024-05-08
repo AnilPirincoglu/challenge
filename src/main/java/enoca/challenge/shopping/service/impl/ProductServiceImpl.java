@@ -28,18 +28,18 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ProductResponse createProduct(Product product) {
-        findProduct(product.getId());
+        if (productRepository.findByName(product.getName()).isPresent())
+            throw new GlobalException("This product is already exist : " + product.getName(),
+                    HttpStatus.BAD_REQUEST);
         return ProductConverter
-                .productToResponse(
-                        productRepository.save(product));
+                .productToResponse(productRepository.save(product));
     }
 
     @Override
     public ProductResponse updateProduct(Product product) {
         findProduct(product.getId());
         return ProductConverter
-                .productToResponse(
-                        productRepository.save(product));
+                .productToResponse(productRepository.save(product));
     }
 
     @Override
@@ -49,7 +49,7 @@ public class ProductServiceImpl implements ProductService {
         return product;
     }
 
-    public Product findProduct(Long id){
+    public Product findProduct(Long id) {
         return productRepository.findById(id)
                 .orElseThrow(() ->
                         new GlobalException("Product with given id is not exist: " + id,
