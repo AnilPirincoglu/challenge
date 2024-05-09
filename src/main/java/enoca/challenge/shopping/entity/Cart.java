@@ -21,7 +21,7 @@ public class Cart extends BaseEntity {
     @Column(name = "total_price")
     private Double totalPrice;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "customer_id")
     private Customer customer;
 
