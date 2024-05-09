@@ -4,16 +4,16 @@ import enoca.challenge.shopping.dto.CartResponse;
 import enoca.challenge.shopping.entity.Cart;
 
 public interface CartService {
-    CartResponse getCart(Long id);
+    CartResponse getCart(Long cartId);
 
-    CartResponse updateCart(Long id);
+    CartResponse updateCart(Long cartId);
 
-    CartResponse emptyCart(Long id);
+    CartResponse emptyCart(Long cartId);
 
-    CartResponse addProductToCart(Long product_id, Long cart_id);
+    CartResponse addProductToCart(Long productId, Long cartId);
 
-    CartResponse removeProductFromCart(Long product_id, Long cart_id);
+    CartResponse removeProductFromCart(Long productId, Long cartId);
 
-    Cart findCart(Long id);
+    Cart findCart(Long cartId);
 
 }
