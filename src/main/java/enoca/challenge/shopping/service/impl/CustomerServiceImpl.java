@@ -31,10 +31,10 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public Customer findCustomer(Long id) {
-        return customerRepository.findById(id)
+    public Customer findCustomer(Long customerId) {
+        return customerRepository.findById(customerId)
                 .orElseThrow(() ->
-                        new GlobalException("Customer with given id is not exist : " + id,
+                        new GlobalException("Customer with given id is not exist : " + customerId,
                                 HttpStatus.NOT_FOUND));
     }
 
