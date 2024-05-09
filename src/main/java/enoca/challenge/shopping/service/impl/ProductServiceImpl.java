@@ -43,16 +43,17 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public ProductResponse deleteProduct(Long id) {
-        var product = getProduct(id);
-        productRepository.deleteById(id);
-        return product;
+    public ProductResponse deleteProduct(Long productId) {
+        ProductResponse productResponse = getProduct(productId);
+        productRepository.deleteById(productId);
+        return productResponse;
     }
 
-    public Product findProduct(Long id) {
-        return productRepository.findById(id)
+    @Override
+    public Product findProduct(Long productId) {
+        return productRepository.findById(productId)
                 .orElseThrow(() ->
-                        new GlobalException("Product with given id is not exist: " + id,
+                        new GlobalException("Product with given id is not exist: " + productId,
                                 HttpStatus.NOT_FOUND));
     }
 }

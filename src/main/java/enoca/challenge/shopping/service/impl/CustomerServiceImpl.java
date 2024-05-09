@@ -1,31 +1,32 @@
 package enoca.challenge.shopping.service.impl;
 
 import enoca.challenge.shopping.dto.CustomerResponse;
+import enoca.challenge.shopping.entity.Cart;
 import enoca.challenge.shopping.entity.Customer;
 import enoca.challenge.shopping.exception.GlobalException;
 import enoca.challenge.shopping.repository.CustomerRepository;
-import enoca.challenge.shopping.service.CartService;
 import enoca.challenge.shopping.service.CustomerService;
 import enoca.challenge.shopping.util.CustomerConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+
 @Service
 public class CustomerServiceImpl implements CustomerService {
 
     private CustomerRepository customerRepository;
-    private CartService cartService;
 
     @Autowired
-    public CustomerServiceImpl(CustomerRepository customerRepository, CartService cartService) {
+    public CustomerServiceImpl(CustomerRepository customerRepository) {
         this.customerRepository = customerRepository;
-        this.cartService = cartService;
     }
     @Override
     public CustomerResponse addCustomer(Customer customer) {
         checkEmail(customer);
-        cartService.createCart().setCustomer(customer);
+        Cart cart = new Cart(0d,customer,new ArrayList<>());
+        customer.setCart(cart);
         return CustomerConverter
                 .customerToResponse(customerRepository.save(customer));
     }

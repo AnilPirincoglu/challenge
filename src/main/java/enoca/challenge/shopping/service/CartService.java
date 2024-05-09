@@ -13,7 +13,7 @@ public interface CartService {
     CartResponse addProductToCart(Long product_id, Long cart_id);
 
     CartResponse removeProductFromCart(Long product_id, Long cart_id);
-    Cart createCart();
+
     Cart findCart(Long id);
 
 }

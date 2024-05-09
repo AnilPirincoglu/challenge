@@ -52,7 +52,7 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public CartResponse addProductToCart(Long productId, Long cartId) {
-        var cart = findCart(cartId);
+        Cart cart = findCart(cartId);
         cart.addProduct(productService
                 .findProduct(productId));
         cart.setTotalPrice(calculateTotalPrice(cart));
@@ -62,7 +62,7 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public CartResponse removeProductFromCart(Long productId, Long cartId) {
-        var cart = findCart(cartId);
+        Cart cart = findCart(cartId);
         if (!cart.getProducts().remove(productService.findProduct(productId)))
             throw new GlobalException("This product is not in your cart!", HttpStatus.NOT_FOUND);
         cart.setTotalPrice(calculateTotalPrice(cart));
@@ -71,10 +71,6 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public Cart createCart() {
-        return cartRepository.save(new Cart(0d,null,new ArrayList<>()));
-    }
-
     public Cart findCart(Long cartId) {
         return cartRepository.findById(cartId)
                 .orElseThrow(() ->
