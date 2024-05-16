@@ -1,7 +1,7 @@
 package enoca.challenge.shopping.service.impl;
 
-import enoca.challenge.shopping.dto.CartResponse;
-import enoca.challenge.shopping.dto.OrderResponse;
+import enoca.challenge.shopping.dto.response.CartResponse;
+import enoca.challenge.shopping.dto.response.OrderResponse;
 import enoca.challenge.shopping.entity.Cart;
 import enoca.challenge.shopping.entity.Order;
 import enoca.challenge.shopping.entity.OrderItem;
