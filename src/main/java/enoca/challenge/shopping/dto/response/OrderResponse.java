@@ -1,4 +1,6 @@
-package enoca.challenge.shopping.dto;
+package enoca.challenge.shopping.dto.response;
+
+import enoca.challenge.shopping.dto.response.OrderItemResponse;
 
 import java.util.List;
 
