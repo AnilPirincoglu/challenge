@@ -1,6 +1,6 @@
 package enoca.challenge.shopping.service;
 
-import enoca.challenge.shopping.dto.CartResponse;
+import enoca.challenge.shopping.dto.response.CartResponse;
 import enoca.challenge.shopping.entity.Cart;
 
 public interface CartService {

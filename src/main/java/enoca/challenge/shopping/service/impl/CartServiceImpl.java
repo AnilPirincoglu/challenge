@@ -1,6 +1,6 @@
 package enoca.challenge.shopping.service.impl;
 
-import enoca.challenge.shopping.dto.CartResponse;
+import enoca.challenge.shopping.dto.response.CartResponse;
 import enoca.challenge.shopping.entity.Cart;
 import enoca.challenge.shopping.entity.Product;
 import enoca.challenge.shopping.exception.GlobalException;

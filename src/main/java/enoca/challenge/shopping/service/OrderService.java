@@ -1,6 +1,6 @@
 package enoca.challenge.shopping.service;
 
-import enoca.challenge.shopping.dto.OrderResponse;
+import enoca.challenge.shopping.dto.response.OrderResponse;
 import enoca.challenge.shopping.entity.Order;
 
 import java.util.List;

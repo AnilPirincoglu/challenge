@@ -1,6 +1,6 @@
 package enoca.challenge.shopping.controller;
 
-import enoca.challenge.shopping.dto.OrderResponse;
+import enoca.challenge.shopping.dto.response.OrderResponse;
 import enoca.challenge.shopping.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -18,12 +18,12 @@ public class OrderController {
         this.orderService = orderService;
     }
 
-    @PostMapping("/{id}")
-    public OrderResponse placeOrder(@PathVariable Long id) {
-        return orderService.placeOrder(id);
+    @PostMapping("/{cartId}")
+    public OrderResponse placeOrder(@PathVariable Long cartId) {
+        return orderService.placeOrder(cartId);
     }
-    @GetMapping("/{id}")
-    public List<OrderResponse> getAllOrdersForCustomer(@PathVariable Long id) {
-        return orderService.getAllOrdersForCustomer(id);
+    @GetMapping("/{customerId}")
+    public List<OrderResponse> getAllOrdersForCustomer(@PathVariable Long customerId) {
+        return orderService.getAllOrdersForCustomer(customerId);
     }
 }
