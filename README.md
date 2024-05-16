@@ -7,33 +7,34 @@
 ### POST /product/create
 
 
-### GET /product/{id}
+### GET /product/{productId}
 
-### DELETE /product/delete/{id}
+
+### DELETE /product/delete/{productId}
 
 
 ## order-controller
 
 
-### GET /order/{id}
+### GET /order/{orderId}
 
-### POST /order/{id}
+### POST /order/{orderId}
 ## customer-controller
 
 
-### POST /customer/
+### POST /customer/add
 
 ## cart-controller
 
 
-### POST/cart/remove/{product_id}/{cart_id}
+### POST/cart/remove/{cartId}/{productId}
 
-### POST /cart/empty/{id}
+### POST /cart/empty/{cartId}
 
-### POST /cart/add/{product_id}/{cart_id}
+### POST /cart/add/{cartId}/{productId}
 
-### POST /cart/
+### POST /cart/update/{cartId}
 
-### GET /cart/{id}
+### GET /cart/{cartId}
 
 # [Swagger documentation link](http://localhost:9000/api/v1/swagger-ui/index.html#/)
