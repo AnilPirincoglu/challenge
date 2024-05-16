@@ -1,5 +1,6 @@
 package enoca.challenge.shopping.service.impl;
 
+import enoca.challenge.shopping.dto.request.CustomerRequest;
 import enoca.challenge.shopping.entity.Cart;
 import enoca.challenge.shopping.entity.Customer;
 import enoca.challenge.shopping.exception.GlobalException;
@@ -60,7 +61,7 @@ class CustomerServiceImplTest {
     void addCustomerFailure() {
 
         given(customerRepository.findByEmail("test@test.com")).willReturn(Optional.of(customer));
-        assertThatThrownBy(()->customerService.addCustomer(customer))
+        assertThatThrownBy(()->customerService.addCustomer(new CustomerRequest(customer.getFirstName(), customer.getLastName(), customer.getEmail())))
                 .isInstanceOf(GlobalException.class)
                 .hasMessageContaining("This email is already used : " + customer.getEmail());
         verify(customerRepository,never()).save(customer);
