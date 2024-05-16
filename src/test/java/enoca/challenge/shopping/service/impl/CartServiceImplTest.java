@@ -1,5 +1,6 @@
 package enoca.challenge.shopping.service.impl;
 
+import enoca.challenge.shopping.dto.response.CartResponse;
 import enoca.challenge.shopping.entity.Cart;
 import enoca.challenge.shopping.entity.Customer;
 import enoca.challenge.shopping.exception.GlobalException;
@@ -38,7 +39,7 @@ class CartServiceImplTest {
         cartService = new CartServiceImpl(cartRepository,productService);
         cart = new Cart(0D,
                 new Customer("testname","testlastname","test@test.com",null,null),
-                null);
+                new ArrayList<>());
     }
 
     @AfterEach
@@ -65,6 +66,9 @@ class CartServiceImplTest {
 
     @Test
     void getCart() {
+        given(cartRepository.findById(cart.getId())).willReturn(Optional.of(cart));
+        CartResponse cartResponse = cartService.getCart(cart.getId());
+        assertEquals(cartResponse.customerEmail(),cart.getCustomer().getEmail());
     }
 
     @Test
