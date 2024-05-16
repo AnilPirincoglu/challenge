@@ -1,7 +1,10 @@
 package enoca.challenge.shopping.service.impl;
 
-import enoca.challenge.shopping.dto.OrderResponse;
+import enoca.challenge.shopping.dto.response.CartResponse;
+import enoca.challenge.shopping.dto.response.OrderResponse;
 import enoca.challenge.shopping.entity.Cart;
+import enoca.challenge.shopping.entity.Order;
+import enoca.challenge.shopping.entity.OrderItem;
 import enoca.challenge.shopping.entity.Product;
 import enoca.challenge.shopping.exception.GlobalException;
 import enoca.challenge.shopping.repository.OrderRepository;
@@ -13,7 +16,9 @@ import enoca.challenge.shopping.util.OrderConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -30,31 +35,50 @@ public class OrderServiceImpl implements OrderService {
         this.customerService = customerService;
     }
 
+    @Transactional
     @Override
-    public OrderResponse placeOrder(Long cart_id) {
-        OrderResponse orderResponse = OrderConverter.orderToResponse(
-                orderRepository.save(
-                        CartConverter.cartToOrder(
-                                stockControl(cart_id))));
-        cartService.emptyCart(cart_id);
+    public OrderResponse placeOrder(Long cartId) {
+        Order order = createOrder(cartId);
+        stockControl(cartId).products().forEach(productResponse ->
+                order.addOrderItem(new OrderItem(productResponse.name(),
+                                productResponse.price(),
+                                order)
+                ));
+        OrderResponse orderResponse = OrderConverter
+                .orderToResponse(orderRepository.save(order));
+        cartService.emptyCart(cartId);
         return orderResponse;
     }
 
     @Override
-    public List<OrderResponse> getAllOrdersForCustomer(Long customer_id) {
+    public List<OrderResponse> getAllOrdersForCustomer(Long customerId) {
         return OrderConverter.orderToResponseList(
-                customerService.findCustomer(customer_id)
+                customerService.findCustomer(customerId)
                         .getOrders());
     }
 
-    private Cart stockControl(Long cart_id) {//TODO Mantık Hatası Var
-        Cart cart = cartService.findCart(cart_id);
+    @Override
+    public Order getOrder(Long orderId) {
+        return orderRepository.findById(orderId).orElseThrow(() ->
+                new GlobalException("Order with given id is not exist: " + orderId, HttpStatus.NOT_FOUND)
+        );
+    }
+
+    private Order createOrder(Long cartId) {
+        CartResponse cartResponse = cartService.getCart(cartId);
+        return orderRepository.save(new Order(cartResponse.totalPrice(),
+                customerService.findByEmail(cartResponse.customerEmail()),
+                new ArrayList<>()));
+    }
+
+    private CartResponse stockControl(Long cartId) {
+        Cart cart = cartService.findCart(cartId);
         for (Product product : cart.getProducts()) {
             if (product.getStockQuantity() <= 0)
                 throw new GlobalException(product.getName() + " is out of stock!", HttpStatus.BAD_REQUEST);
         }
         cart.getProducts()
                 .forEach(product -> product.setStockQuantity(product.getStockQuantity() - 1));
-        return cart;
+        return CartConverter.cartToResponse(cart);
     }
 }

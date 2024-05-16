@@ -27,7 +27,7 @@ public class Product extends BaseEntity {
     @Column(name = "price")
     private Double price;
 
-    @Min(value = 1, message = "Stock must be more than 0")
+    @Min(value = 0, message = "Stock must be more than 0")
     @Column(name = "stock_quantity")
     private int stockQuantity;
 
@@ -38,22 +38,10 @@ public class Product extends BaseEntity {
             inverseJoinColumns = @JoinColumn(name = "cart_id"))
     private List<Cart> carts;
 
-    @ManyToMany
-    @JoinTable(name = "order_product",
-            schema = "enoca_challenge",
-            joinColumns = @JoinColumn(name = "product_id"),
-            inverseJoinColumns = @JoinColumn(name = "order_id"))
-    private List<Order> orders;
-
     public void addCart(Cart cart) {
         if (carts == null)
             carts = new ArrayList<>();
         carts.add(cart);
     }
 
-    public void addOrder(Order order) {
-        if (orders == null)
-            orders = new ArrayList<>();
-        orders.add(order);
-    }
 }

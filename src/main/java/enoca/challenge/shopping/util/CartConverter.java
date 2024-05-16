@@ -1,10 +1,7 @@
 package enoca.challenge.shopping.util;
 
-import enoca.challenge.shopping.dto.CartResponse;
+import enoca.challenge.shopping.dto.response.CartResponse;
 import enoca.challenge.shopping.entity.Cart;
-import enoca.challenge.shopping.entity.Order;
-
-import java.util.ArrayList;
 
 public class CartConverter {
     public static CartResponse cartToResponse(Cart cart) {
@@ -14,10 +11,4 @@ public class CartConverter {
                 cart.getTotalPrice());
     }
 
-    public static Order cartToOrder(Cart cart) {
-        return new Order(cart.getTotalPrice(),
-                cart.getCustomer(),
-                new ArrayList<>(cart.getProducts())
-        );
-    }
 }

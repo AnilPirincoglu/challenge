@@ -1,7 +1,7 @@
 package enoca.challenge.shopping.controller;
 
-import enoca.challenge.shopping.dto.ProductResponse;
-import enoca.challenge.shopping.entity.Product;
+import enoca.challenge.shopping.dto.request.ProductRequest;
+import enoca.challenge.shopping.dto.response.ProductResponse;
 import enoca.challenge.shopping.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -17,23 +17,24 @@ public class ProductController {
         this.productService = productService;
     }
 
-    @GetMapping("/{id}")
-    public ProductResponse getProduct(@PathVariable Long id) {
-        return productService.getProduct(id);
+    @GetMapping("/{productId}")
+    public ProductResponse getProduct(@PathVariable Long productId) {
+        return productService.getProduct(productId);
     }
 
     @PostMapping("/create")
-    public ProductResponse createProduct(@RequestBody Product product) {
-        return productService.createProduct(product);
+    public ProductResponse createProduct(@RequestBody ProductRequest productRequest) {
+        return productService.createProduct(productRequest);
     }
 
-    @PostMapping("/update")
-    public ProductResponse updateProduct(@RequestBody Product product) {
-        return productService.updateProduct(product);
+    @PostMapping("/update/{productId}")
+    public ProductResponse updateProduct(@PathVariable Long productId,
+                                         @RequestBody ProductRequest productRequest) {
+        return productService.updateProduct(productId, productRequest);
     }
 
-    @DeleteMapping("/delete/{id}")
-    public ProductResponse deleteProduct(@PathVariable Long id) {
-        return productService.deleteProduct(id);
+    @DeleteMapping("/delete/{productId}")
+    public ProductResponse deleteProduct(@PathVariable Long productId) {
+        return productService.deleteProduct(productId);
     }
 }

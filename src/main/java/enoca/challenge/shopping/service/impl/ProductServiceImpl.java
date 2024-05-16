@@ -1,6 +1,7 @@
 package enoca.challenge.shopping.service.impl;
 
-import enoca.challenge.shopping.dto.ProductResponse;
+import enoca.challenge.shopping.dto.request.ProductRequest;
+import enoca.challenge.shopping.dto.response.ProductResponse;
 import enoca.challenge.shopping.entity.Product;
 import enoca.challenge.shopping.exception.GlobalException;
 import enoca.challenge.shopping.repository.ProductRepository;
@@ -21,49 +22,49 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public ProductResponse getProduct(Long id) {
+    public ProductResponse getProduct(Long productId) {
         return ProductConverter
-                .productToResponse(findProduct(id));
+                .productToResponse(findProduct(productId));
     }
 
     @Override
-    public ProductResponse createProduct(Product product) {
-        haveIProduct(product);
-        return ProductConverter
-                .productToResponse(
-                        productRepository.save(product));
+    public ProductResponse createProduct(ProductRequest productRequest) {
+        checkProduct(productRequest);
+        return ProductConverter.productToResponse(
+                productRepository.save(
+                        ProductConverter.requestToProduct(productRequest)
+                ));
     }
 
     @Override
-    public ProductResponse updateProduct(Product product) {
-        hasItId(product);
-        return ProductConverter
-                .productToResponse(
-                        productRepository.save(product));
+    public ProductResponse updateProduct(Long productId, ProductRequest productRequest) {
+        Product product = findProduct(productId);
+
+        if (!product.getName().equals(productRequest.name()))
+            checkProduct(productRequest);
+
+        return ProductConverter.productToResponse(
+                productRepository.save(ProductConverter.requestToProduct(product, productRequest)));
     }
 
     @Override
-    public ProductResponse deleteProduct(Long id) {
-        var product = getProduct(id);
-        productRepository.deleteById(id);
-        return product;
+    public ProductResponse deleteProduct(Long productId) {
+        ProductResponse productResponse = getProduct(productId);
+        productRepository.deleteById(productId);
+        return productResponse;
     }
 
-    public Product findProduct(Long id){
-        return productRepository.findById(id)
+    @Override
+    public Product findProduct(Long productId) {
+        return productRepository.findById(productId)
                 .orElseThrow(() ->
-                        new GlobalException("Product with given id is not exist: " + id,
+                        new GlobalException("Product with given id is not exist: " + productId,
                                 HttpStatus.NOT_FOUND));
     }
 
-    private void haveIProduct(Product product) {
-        if (productRepository.findByName(product.getName()).isPresent())
-            throw new GlobalException("This product already created : " + product.getName(),
+    private void checkProduct(ProductRequest productRequest) {
+        if (productRepository.findByName(productRequest.name()).isPresent())
+            throw new GlobalException("This product is already exist : " + productRequest.name(),
                     HttpStatus.BAD_REQUEST);
-    }
-
-    private void hasItId(Product product) {
-        if (product.getId() == null)
-            throw new GlobalException("Id field must not be null!", HttpStatus.BAD_REQUEST);
     }
 }

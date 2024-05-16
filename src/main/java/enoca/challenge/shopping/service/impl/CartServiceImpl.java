@@ -1,6 +1,6 @@
 package enoca.challenge.shopping.service.impl;
 
-import enoca.challenge.shopping.dto.CartResponse;
+import enoca.challenge.shopping.dto.response.CartResponse;
 import enoca.challenge.shopping.entity.Cart;
 import enoca.challenge.shopping.entity.Product;
 import enoca.challenge.shopping.exception.GlobalException;
@@ -13,7 +13,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 @Service
 public class CartServiceImpl implements CartService {
@@ -28,22 +27,22 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public CartResponse getCart(Long id) {
+    public CartResponse getCart(Long cartId) {
         return CartConverter
-                .cartToResponse(findCart(id));
+                .cartToResponse(findCart(cartId));
     }
 
     @Override
-    public CartResponse updateCart(Cart cart) {
-        hasItId(cart);
+    public CartResponse updateCart(Long cartId) {
+        Cart cart = findCart(cartId);
         cart.setTotalPrice(calculateTotalPrice(cart));
         return CartConverter
                 .cartToResponse(cartRepository.save(cart));
     }
 
     @Override
-    public CartResponse emptyCart(Long id) {
-        Cart cart = findCart(id);
+    public CartResponse emptyCart(Long cartId) {
+        Cart cart = findCart(cartId);
         cart.setProducts(new ArrayList<>());
         cart.setTotalPrice(0d);
         cartRepository.save(cart);
@@ -52,19 +51,19 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public CartResponse addProductToCart(Long product_id, Long cart_id) {
-        var cart = findCart(cart_id);
+    public CartResponse addProductToCart(Long productId, Long cartId) {
+        Cart cart = findCart(cartId);
         cart.addProduct(productService
-                .findProduct(product_id));
+                .findProduct(productId));
         cart.setTotalPrice(calculateTotalPrice(cart));
         return CartConverter
                 .cartToResponse(cartRepository.save(cart));
     }
 
     @Override
-    public CartResponse removeProductFromCart(Long product_id, Long cart_id) {
-        var cart = findCart(cart_id);
-        if (!cart.getProducts().remove(productService.findProduct(product_id)))
+    public CartResponse removeProductFromCart(Long productId, Long cartId) {
+        Cart cart = findCart(cartId);
+        if (!cart.getProducts().remove(productService.findProduct(productId)))
             throw new GlobalException("This product is not in your cart!", HttpStatus.NOT_FOUND);
         cart.setTotalPrice(calculateTotalPrice(cart));
         return CartConverter
@@ -72,19 +71,10 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public Cart createCart() {
-        return cartRepository.save(new Cart());
-    }
-
-    private void hasItId(Cart cart) {
-        if (cart.getId() == null)
-            throw new GlobalException("Id field must not be null!", HttpStatus.BAD_REQUEST);
-    }
-
-    public Cart findCart(Long id) {
-        return cartRepository.findById(id)
+    public Cart findCart(Long cartId) {
+        return cartRepository.findById(cartId)
                 .orElseThrow(() ->
-                        new GlobalException("Cart with given id is not exist : " + id,
+                        new GlobalException("Cart with given id is not exist : " + cartId,
                                 HttpStatus.BAD_REQUEST));
     }
 

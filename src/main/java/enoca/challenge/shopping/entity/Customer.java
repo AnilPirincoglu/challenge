@@ -24,11 +24,13 @@ public class Customer extends BaseEntity {
 
     @NotBlank(message = "Name field can not be blank")
     @Size(min = 2, max = 30, message = "Name must be more then 2 and less then 30 characters")
+    @Pattern(regexp = "^[A-Za-z]*$",message = "Name is not valid")
     @Column(name = "first_name")
     private String firstName;
 
     @NotBlank(message = "Last name field can not be blank")
     @Size(min = 2, max = 30, message = "Last name must be more then 2 and less then 30 characters")
+    @Pattern(regexp = "^[A-Za-z]*$",message = "Lastname is not valid")
     @Column(name = "last_name")
     private String lastName;
 

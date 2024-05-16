@@ -1,11 +1,14 @@
 package enoca.challenge.shopping.service;
 
-import enoca.challenge.shopping.dto.OrderResponse;
+import enoca.challenge.shopping.dto.response.OrderResponse;
+import enoca.challenge.shopping.entity.Order;
 
 import java.util.List;
 
 public interface OrderService {
 
-    OrderResponse placeOrder(Long cart_id);
-    List<OrderResponse> getAllOrdersForCustomer(Long customer_id);
+    OrderResponse placeOrder(Long cartId);
+    List<OrderResponse> getAllOrdersForCustomer(Long customerId);
+    Order getOrder(Long orderId);
+
 }

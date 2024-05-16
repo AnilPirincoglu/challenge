@@ -20,20 +20,16 @@ public class Order extends BaseEntity {
     @Column(name = "total_price")
     private Double totalPrice;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "customer_id")
     private Customer customer;
 
-    @ManyToMany
-    @JoinTable(name = "order_product",
-            schema = "enoca_challenge",
-            joinColumns = @JoinColumn(name = "order_id"),
-            inverseJoinColumns = @JoinColumn(name = "product_id"))
-    private List<Product> products;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "order")
+    private List<OrderItem> orderItems;
 
-    public void addProduct(Product product) {
-        if (products == null)
-            products = new ArrayList<>();
-        products.add(product);
+    public void addOrderItem(OrderItem orderItem) {
+        if (orderItems == null)
+            orderItems = new ArrayList<>();
+        orderItems.add(orderItem);
     }
 }

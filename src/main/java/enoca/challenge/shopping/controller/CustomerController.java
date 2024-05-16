@@ -1,7 +1,7 @@
 package enoca.challenge.shopping.controller;
 
-import enoca.challenge.shopping.dto.CustomerResponse;
-import enoca.challenge.shopping.entity.Customer;
+import enoca.challenge.shopping.dto.request.CustomerRequest;
+import enoca.challenge.shopping.dto.response.CustomerResponse;
 import enoca.challenge.shopping.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,8 +20,8 @@ public class CustomerController {
         this.customerService = customerService;
     }
 
-    @PostMapping("/")
-    public CustomerResponse addCustomer(@RequestBody Customer customer){
-        return customerService.addCustomer(customer);
+    @PostMapping("/add")
+    public CustomerResponse addCustomer(@RequestBody CustomerRequest customerRequest){
+        return customerService.addCustomer(customerRequest);
     }
 }
