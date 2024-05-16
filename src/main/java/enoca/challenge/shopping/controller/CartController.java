@@ -26,7 +26,7 @@ public class CartController {
         return cartService.updateCart(cartId);
     }
 
-    @PostMapping("empty/{cartId}")
+    @PostMapping("/empty/{cartId}")
     public CartResponse emptyCart(@PathVariable Long cartId) {
         return cartService.emptyCart(cartId);
     }
