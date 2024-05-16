@@ -1,7 +1,6 @@
 package enoca.challenge.shopping.controller;
 
-import enoca.challenge.shopping.dto.CartResponse;
-import enoca.challenge.shopping.entity.Cart;
+import enoca.challenge.shopping.dto.response.CartResponse;
 import enoca.challenge.shopping.service.CartService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -17,30 +16,30 @@ public class CartController {
         this.cartService = cartService;
     }
 
-    @GetMapping("/{id}")
-    public CartResponse getCart(@PathVariable Long id) {
-        return cartService.getCart(id);
+    @GetMapping("/{cartId}")
+    public CartResponse getCart(@PathVariable Long cartId) {
+        return cartService.getCart(cartId);
     }
 
-    @PostMapping("/update/{id}")
-    public CartResponse updateCart(@PathVariable Long id) {
-        return cartService.updateCart(id);
+    @PostMapping("/update/{cartId}")
+    public CartResponse updateCart(@PathVariable Long cartId) {
+        return cartService.updateCart(cartId);
     }
 
-    @PostMapping("empty/{id}")
-    public CartResponse emptyCart(@PathVariable Long id) {
-        return cartService.emptyCart(id);
+    @PostMapping("empty/{cartId}")
+    public CartResponse emptyCart(@PathVariable Long cartId) {
+        return cartService.emptyCart(cartId);
     }
 
-    @PostMapping("add/{product_id}/{cart_id}")
-    public CartResponse addProductToCart(@PathVariable Long product_id,
-                                         @PathVariable Long cart_id) {
-        return cartService.addProductToCart(product_id, cart_id);
+    @PostMapping("add/{cartId}/{productId}")
+    public CartResponse addProductToCart(@PathVariable Long productId,
+                                         @PathVariable Long cartId) {
+        return cartService.addProductToCart(productId, cartId);
     }
 
-    @PostMapping("remove/{product_id}/{cart_id}")
-    public CartResponse removeProductFromCart(@PathVariable Long product_id,
-                                              @PathVariable Long cart_id) {
-        return cartService.removeProductFromCart(product_id, cart_id);
+    @PostMapping("remove/{cartId}/{productId}")
+    public CartResponse removeProductFromCart(@PathVariable Long productId,
+                                              @PathVariable Long cartId) {
+        return cartService.removeProductFromCart(productId, cartId);
     }
 }
