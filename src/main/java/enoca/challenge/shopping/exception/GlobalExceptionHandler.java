@@ -3,6 +3,7 @@ package enoca.challenge.shopping.exception;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.TransactionSystemException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
@@ -29,8 +30,18 @@ public class GlobalExceptionHandler {
                         .getConstraintViolations()
                         .stream()
                         .findFirst()
-                        .get()
+                        .orElseThrow()
                         .getMessage(),
+                Instant.now());
+
+        return new ResponseEntity<>(exceptionResponse, status);
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<ExceptionResponse> exceptionHandler(TransactionSystemException notValidException) {
+        var status = HttpStatus.BAD_REQUEST;
+
+        ExceptionResponse exceptionResponse = new ExceptionResponse("Please check your updated data.",
                 Instant.now());
 
         return new ResponseEntity<>(exceptionResponse, status);
