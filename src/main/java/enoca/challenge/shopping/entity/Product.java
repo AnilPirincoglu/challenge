@@ -27,7 +27,7 @@ public class Product extends BaseEntity {
     @Column(name = "price")
     private Double price;
 
-    @Min(value = 1, message = "Stock must be more than 0")
+    @Min(value = 0, message = "Stock must be more than 0")
     @Column(name = "stock_quantity")
     private int stockQuantity;
 
