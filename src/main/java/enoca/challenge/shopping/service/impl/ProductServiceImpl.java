@@ -1,6 +1,7 @@
 package enoca.challenge.shopping.service.impl;
 
-import enoca.challenge.shopping.dto.ProductResponse;
+import enoca.challenge.shopping.dto.request.ProductRequest;
+import enoca.challenge.shopping.dto.response.ProductResponse;
 import enoca.challenge.shopping.entity.Product;
 import enoca.challenge.shopping.exception.GlobalException;
 import enoca.challenge.shopping.repository.ProductRepository;
@@ -21,25 +22,29 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public ProductResponse getProduct(Long id) {
+    public ProductResponse getProduct(Long productId) {
         return ProductConverter
-                .productToResponse(findProduct(id));
+                .productToResponse(findProduct(productId));
     }
 
     @Override
-    public ProductResponse createProduct(Product product) {
-        if (productRepository.findByName(product.getName()).isPresent())
-            throw new GlobalException("This product is already exist : " + product.getName(),
-                    HttpStatus.BAD_REQUEST);
-        return ProductConverter
-                .productToResponse(productRepository.save(product));
+    public ProductResponse createProduct(ProductRequest productRequest) {
+        checkProduct(productRequest);
+        return ProductConverter.productToResponse(
+                productRepository.save(
+                        ProductConverter.requestToProduct(productRequest)
+                ));
     }
 
     @Override
-    public ProductResponse updateProduct(Product product) {
-        findProduct(product.getId());
-        return ProductConverter
-                .productToResponse(productRepository.save(product));
+    public ProductResponse updateProduct(Long productId, ProductRequest productRequest) {
+        Product product = findProduct(productId);
+
+        if (!product.getName().equals(productRequest.name()))
+            checkProduct(productRequest);
+
+        return ProductConverter.productToResponse(
+                productRepository.save(ProductConverter.requestToProduct(product, productRequest)));
     }
 
     @Override
@@ -55,5 +60,11 @@ public class ProductServiceImpl implements ProductService {
                 .orElseThrow(() ->
                         new GlobalException("Product with given id is not exist: " + productId,
                                 HttpStatus.NOT_FOUND));
+    }
+
+    private void checkProduct(ProductRequest productRequest) {
+        if (productRepository.findByName(productRequest.name()).isPresent())
+            throw new GlobalException("This product is already exist : " + productRequest.name(),
+                    HttpStatus.BAD_REQUEST);
     }
 }
